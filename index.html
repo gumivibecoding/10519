@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MECH-CORE | 기계공학의 세계</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        steel: {
+                            950: '#0a0d14',
+                            900: '#101522',
+                            800: '#1a2133',
+                            700: '#26314a',
+                            border: 'rgba(255, 255, 255, 0.08)'
+                        },
+                        brand: {
+                            cyan: '#00f0ff',
+                            blue: '#3b82f6',
+                            orange: '#ff6b00',
+                            emerald: '#10b981'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: #0a0d14;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        .engineering-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        .glass-nav {
+            background: rgba(10, 13, 20, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .clean-card {
+            background: rgba(16, 21, 34, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+
+        .clean-card:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px rgba(0, 240, 255, 0.1);
+        }
+
+        .glow-accent {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0d14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a2133;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="engineering-grid antialiased selection:bg-brand-cyan selection:text-black">
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-steel-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo -->
+                <a href="#hero" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-cyan to-brand-blue flex items-center justify-center text-slate-950 font-black text-lg glow-accent">
+                        <i class="fa-solid fa-gear animate-[spin_10s_linear_infinite]"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-black tracking-wider text-white">MECH<span class="text-brand-cyan">-CORE</span></span>
+                        <span class="block text-[10px] font-mono text-slate-400 tracking-widest uppercase">Mechanical Engineering Portal</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#mechanics" class="text-slate-300 hover:text-brand-cyan transition-colors">4대 역학 개념</a>
+                    <a href="#simulator" class="text-slate-300 hover:text-brand-cyan transition-colors">3D CAD 시뮬레이터</a>
+                    <a href="#matcher" class="text-slate-300 hover:text-brand-cyan transition-colors">공학 적성 테스트</a>
+                    <a href="#applications" class="text-slate-300 hover:text-brand-cyan transition-colors">대표 응용 분야</a>
+                </nav>
+
+                <!-- Header Action Button -->
+                <div class="hidden md:flex items-center">
+                    <a href="#matcher" class="px-5 py-2.5 rounded-lg bg-steel-800 hover:bg-steel-700 text-brand-cyan border border-brand-cyan/30 text-xs font-semibold tracking-wide transition-all">
+                        <i class="fa-solid fa-sliders mr-2"></i>공학 성향 분석
+                    </a>
+                </div>
+
+                <!-- Mobile Navigation Toggle -->
+                <button id="mobile-toggle" class="md:hidden p-2 text-slate-300 hover:text-brand-cyan">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-nav border-b border-steel-border px-6 py-4 space-y-3 text-sm">
+            <a href="#mechanics" class="mobile-link block py-2 text-slate-300 hover:text-brand-cyan">4대 역학 개념</a>
+            <a href="#simulator" class="mobile-link block py-2 text-slate-300 hover:text-brand-cyan">3D CAD 시뮬레이터</a>
+            <a href="#matcher" class="mobile-link block py-2 text-slate-300 hover:text-brand-cyan">공학 적성 테스트</a>
+            <a href="#applications" class="mobile-link block py-2 text-slate-300 hover:text-brand-cyan">대표 응용 분야</a>
+        </div>
+    </header>
+
+    <main class="pt-20">
+
+        <!-- SECTION 1: HERO SECTION -->
+        <section id="hero" class="relative min-h-[88vh] flex items-center justify-center overflow-hidden border-b border-steel-border">
+            <canvas id="hero-canvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40"></canvas>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-16 text-center">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-steel-900 border border-brand-cyan/30 text-brand-cyan text-xs font-mono font-medium mb-6">
+                    <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                    <span>THE ESSENCE OF MECHANICAL ENGINEERING</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto">
+                    세상의 모든 움직임을 설계하는 <br/>
+                    <span class="bg-gradient-to-r from-brand-cyan via-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                        현대 기계공학의 모든 것
+                    </span>
+                </h1>
+
+                <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto font-normal leading-relaxed mt-6">
+                    물리적 세계를 지배하는 <strong>4대 역학의 핵심 원리</strong>부터 실시간 3D CAD 시뮬레이션, 나에게 딱 맞는 공학 성향 진단까지 깔끔하게 탐색하세요.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                    <a href="#mechanics" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-brand-cyan/15 hover:opacity-95 transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-book-open mr-2"></i> 핵심 개념 가이드
+                    </a>
+                    <a href="#simulator" class="w-full sm:w-auto px-7 py-3.5 rounded-xl clean-card text-slate-200 font-semibold text-sm hover:border-brand-cyan/40 transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-cube mr-2 text-brand-cyan"></i> 3D CAD 체험
+                    </a>
+                </div>
+
+                <!-- Minimalist Key Pillars Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 pt-8 border-t border-steel-border/60">
+                    <div class="text-center p-3">
+                        <div class="text-xl font-bold font-mono text-brand-cyan">Solid Mech</div>
+                        <div class="text-xs text-slate-400 mt-1">고체 & 재료 구조</div>
+                    </div>
+                    <div class="text-center p-3">
+                        <div class="text-xl font-bold font-mono text-brand-orange">Thermal Systems</div>
+                        <div class="text-xs text-slate-400 mt-1">열 & 에너지 변환</div>
+                    </div>
+                    <div class="text-center p-3">
+                        <div class="text-xl font-bold font-mono text-brand-blue">Fluid Dynamics</div>
+                        <div class="text-xs text-slate-400 mt-1">유체 & 유선형 흐름</div>
+                    </div>
+                    <div class="text-center p-3">
+                        <div class="text-xl font-bold font-mono text-brand-emerald">Robotics</div>
+                        <div class="text-xs text-slate-400 mt-1">동역학 & 자동화 제어</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SECTION 2: CORE MECHANICS EXPLAINED SIMPLY -->
+        <section id="mechanics" class="py-24 bg-steel-950 relative border-b border-steel-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="px-3 py-1 text-xs font-mono bg-brand-cyan/10 text-brand-cyan rounded-full border border-brand-cyan/20 uppercase tracking-widest">Core Principles</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">기계공학의 뼈대 : 4대 역학 가이드</h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        기계공학의 기초를 이루는 4가지 핵심 물리학 원리가 무엇을 뜻하는지 직관적으로 정리했습니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Solid Mechanics -->
+                    <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan text-xl">
+                                <i class="fa-solid fa-cube"></i>
+                            </div>
+                            <span class="text-xs font-mono text-brand-cyan bg-brand-cyan/10 px-2.5 py-1 rounded">01. SOLID MECHANICS</span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">고체역학 (Solid Mechanics)</h3>
+                            <p class="text-sm font-semibold text-brand-cyan mb-3">"물체에 힘을 가할 때 변형과 파손을 다루는 학문"</p>
+                        </div>
+
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-steel-border pt-4">
+                            <p><strong>💡 무엇인가요?</strong> 교량, 자동차, 건물 구조물이 강한 외력을 받아도 부러지거나 일그러지지 않도록 필요한 소재와 두께를 수학적으로 계산합니다.</p>
+                            <p><strong>🚗 일상 속 예시:</strong> 스마트폰 낙하 충격 테스트, 자동차 충돌 안전 프레임 설계</p>
+                            <p><strong>🛠 적용 기술:</strong> 변형률(Strain) 분석, 응력(Stress) 시뮬레이션, 신소재 설계</p>
+                        </div>
+                    </div>
+
+                    <!-- Thermodynamics -->
+                    <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-brand-orange/10 border border-brand-orange/30 flex items-center justify-center text-brand-orange text-xl">
+                                <i class="fa-solid fa-fire-flame-curved"></i>
+                            </div>
+                            <span class="text-xs font-mono text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded">02. THERMODYNAMICS</span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">열역학 (Thermodynamics)</h3>
+                            <p class="text-sm font-semibold text-brand-orange mb-3">"열에너지를 유용한 운동 에너지로 바꾸는 법"</p>
+                        </div>
+
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-steel-border pt-4">
+                            <p><strong>💡 무엇인가요?</strong> 열과 일(Energy & Work)의 관계를 연구하여 에너지 손실을 줄이고 기계의 효율을 극대화하는 학문입니다.</p>
+                            <p><strong>❄️ 일상 속 예시:</strong> 전기차 배터리 발열 관리, 에어컨 및 냉장고의 냉동 사이클</p>
+                            <p><strong>🛠 적용 기술:</strong> 가스 터빈, 수소 연료전지, 초고효율 열교환기</p>
+                        </div>
+                    </div>
+
+                    <!-- Fluid Mechanics -->
+                    <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-brand-blue/10 border border-brand-blue/30 flex items-center justify-center text-brand-blue text-xl">
+                                <i class="fa-solid fa-water"></i>
+                            </div>
+                            <span class="text-xs font-mono text-brand-blue bg-brand-blue/10 px-2.5 py-1 rounded">03. FLUID MECHANICS</span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">유체역학 (Fluid Mechanics)</h3>
+                            <p class="text-sm font-semibold text-brand-blue mb-3">"공기나 물처럼 흐르는 유체의 운동과 저항 제어"</p>
+                        </div>
+
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-steel-border pt-4">
+                            <p><strong>💡 무엇인가요?</strong> 기체와 액체가 이동할 때 발생하는 공기 저항, 압력 차이, 수력 등을 다룹니다.</p>
+                            <p><strong>✈️ 일상 속 예시:</strong> 비행기 날개가 공중에 뜨는 양력, 스포츠카의 유선형 디자인</p>
+                            <p><strong>🛠 적용 기술:</strong> 전산유체역학(CFD), 풍력 발전 날개, 파이프라인 유량 제어</p>
+                        </div>
+                    </div>
+
+                    <!-- Dynamics -->
+                    <div class="clean-card rounded-2xl p-6 sm:p-8 space-y-5">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald text-xl">
+                                <i class="fa-solid fa-wave-square"></i>
+                            </div>
+                            <span class="text-xs font-mono text-brand-emerald bg-brand-emerald/10 px-2.5 py-1 rounded">04. DYNAMICS</span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">동역학 (Dynamics)</h3>
+                            <p class="text-sm font-semibold text-brand-emerald mb-3">"움직이는 기계의 속도, 가속도 및 진동 제어"</p>
+                        </div>
+
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed border-t border-steel-border pt-4">
+                            <p><strong>💡 무엇인가요?</strong> 시간에 따라 빠르게 구동되는 물체의 힘과 운동, 떨림(진동) 현상을 정밀하게 분석합니다.</p>
+                            <p><strong>🤖 일상 속 예시:</strong> 로봇 팔의 고속 정밀 관절 제어, 드론의 수평 유지 밸런스</p>
+                            <p><strong>🛠 적용 기술:</strong> 진동 소음(NVH) 분석, 자동화 로보틱스 메커니즘</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Extra Technology Cards: CAD/CAE -->
+                <div class="mt-8 p-6 sm:p-8 rounded-2xl clean-card border border-steel-border">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="space-y-2 text-center md:text-left">
+                            <span class="text-xs font-mono text-brand-cyan uppercase tracking-widest">DESIGN & ANALYSIS TOOLS</span>
+                            <h3 class="text-xl font-bold text-white">현대 기계공학의 핵심 소프트웨어: CAD & CAE</h3>
+                            <p class="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                                오늘날의 엔지니어는 종이 도면 대신 **CAD(컴퓨터 3D 입체 설계)**로 모델을 만들고, **CAE(가상 해석 시뮬레이션)**를 통해 실제 시제품 제작 전 하중과 열을 검증합니다.
+                            </p>
+                        </div>
+                        <a href="#simulator" class="px-6 py-3 rounded-xl bg-steel-800 hover:bg-steel-700 text-brand-cyan text-xs font-bold font-mono border border-brand-cyan/20 whitespace-nowrap transition-all">
+                            시뮬레이터 직접 작동하기 →
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- SECTION 3: INTERACTIVE 3D MECHANICAL SIMULATOR -->
+        <section id="simulator" class="py-24 bg-steel-900 relative border-b border-steel-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-12 space-y-3">
+                    <span class="px-3 py-1 text-xs font-mono bg-brand-cyan/10 text-brand-cyan rounded-full border border-brand-cyan/20 uppercase tracking-widest">CAD & FEA Visualizer</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">3D 기계 메커니즘 시뮬레이터</h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        기어 구동 메커니즘을 와이어프레임 메시, 솔리드 금속, 응력(FEA Heatmap) 모드로 전환하며 작동시켜 보세요.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Canvas Area -->
+                    <div class="lg:col-span-8 relative rounded-2xl bg-steel-950 border border-steel-border overflow-hidden h-[420px] sm:h-[480px] shadow-2xl">
+                        <canvas id="sim-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+
+                        <!-- HUD Display overlay -->
+                        <div class="absolute top-4 left-4 p-3 rounded-xl bg-steel-950/80 border border-steel-border text-xs font-mono space-y-1 backdrop-blur-md pointer-events-none">
+                            <div class="text-brand-cyan font-bold flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse mr-2"></span>
+                                MECHANISM: Interlocking Planetary Gears
+                            </div>
+                            <div class="text-slate-400">RENDER MODE: <span id="hud-mode" class="text-white font-bold">FEA Stress Heatmap</span></div>
+                            <div class="text-slate-400">ROTATION SPEED: <span id="hud-rpm" class="text-brand-emerald font-bold">1200 RPM</span></div>
+                        </div>
+
+                        <!-- Bottom Control Bar -->
+                        <div class="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-steel-950/80 border border-steel-border backdrop-blur-md flex flex-wrap items-center justify-between gap-3">
+                            <div class="flex items-center space-x-2">
+                                <button id="btn-mode-fea" class="sim-btn active px-3.5 py-1.5 rounded-lg bg-brand-cyan text-slate-950 font-bold text-xs uppercase transition-all">
+                                    응력 해석 (FEA)
+                                </button>
+                                <button id="btn-mode-wire" class="sim-btn px-3.5 py-1.5 rounded-lg bg-steel-800 text-slate-300 hover:text-white font-medium text-xs uppercase transition-all">
+                                    와이어프레임
+                                </button>
+                                <button id="btn-mode-solid" class="sim-btn px-3.5 py-1.5 rounded-lg bg-steel-800 text-slate-300 hover:text-white font-medium text-xs uppercase transition-all">
+                                    솔리드 금속
+                                </button>
+                            </div>
+
+                            <button id="btn-toggle-spin" class="px-4 py-1.5 rounded-lg bg-steel-800 hover:bg-steel-700 text-slate-200 text-xs font-mono">
+                                <i class="fa-solid fa-pause mr-1"></i> 정지
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Control Side Panel -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <div class="clean-card p-6 rounded-2xl border border-steel-border space-y-5">
+                            <h3 class="text-lg font-bold text-white border-b border-steel-border pb-3">
+                                구동 변수 제어 (Parameters)
+                            </h3>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-mono">
+                                    <span class="text-slate-400">회전 속도 (RPM)</span>
+                                    <span class="text-brand-cyan font-bold" id="val-rpm">1200 RPM</span>
+                                </div>
+                                <input type="range" id="slider-rpm" min="0" max="3000" step="100" value="1200" class="w-full accent-brand-cyan bg-steel-950 rounded-lg h-2 cursor-pointer">
+                            </div>
+
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs font-mono">
+                                    <span class="text-slate-400">가해지는 토크 하중 (Torque Load)</span>
+                                    <span class="text-brand-orange font-bold" id="val-load">75 kN</span>
+                                </div>
+                                <input type="range" id="slider-load" min="10" max="200" step="5" value="75" class="w-full accent-brand-orange bg-steel-950 rounded-lg h-2 cursor-pointer">
+                            </div>
+
+                            <div class="pt-4 border-t border-steel-border space-y-3 text-xs font-mono">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-400">계산된 최대 응력 수치:</span>
+                                    <span class="text-brand-orange font-bold text-sm" id="calc-stress">284.5 MPa</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-400">구조 안전 계수 (Safety Factor):</span>
+                                    <span class="text-brand-emerald font-bold text-sm" id="calc-safety">2.18 (안전)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Heatmap Legend -->
+                        <div class="clean-card p-5 rounded-2xl border border-steel-border space-y-3">
+                            <div class="flex justify-between items-center text-xs font-mono text-slate-400">
+                                <span>FEA Stress Heatmap Indicator</span>
+                                <span class="text-brand-cyan">von Mises</span>
+                            </div>
+                            <div class="h-3.5 w-full rounded-md bg-gradient-to-r from-blue-600 via-emerald-400 via-yellow-400 to-red-600 shadow-inner"></div>
+                            <div class="flex justify-between text-[10px] font-mono text-slate-400">
+                                <span>0 MPa (안전)</span>
+                                <span>600+ MPa (파손 위험)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- SECTION 4: INTERACTIVE ENGINEERING TRACK MATCHER (QUIZ) -->
+        <section id="matcher" class="py-24 bg-steel-950 relative border-b border-steel-border">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center mb-12 space-y-3">
+                    <span class="px-3 py-1 text-xs font-mono bg-brand-cyan/10 text-brand-cyan rounded-full border border-brand-cyan/20 uppercase tracking-widest">Engineering Fit Analyzer</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">기계공학 성향 분석 테스트</h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        4개의 간단한 흥미 질문을 통해 나에게 가장 잘 맞는 기계공학 핵심 전문 분야를 찾아보세요.
+                    </p>
+                </div>
+
+                <div class="clean-card p-6 sm:p-10 rounded-2xl border border-steel-border relative">
+                    
+                    <!-- Progress Header -->
+                    <div id="quiz-progress-box" class="mb-8">
+                        <div class="flex justify-between text-xs font-mono text-slate-400 mb-2">
+                            <span>QUESTION PROGRESS</span>
+                            <span id="quiz-step-text" class="text-brand-cyan font-bold">1 / 4</span>
+                        </div>
+                        <div class="h-2 w-full bg-steel-900 rounded-full overflow-hidden">
+                            <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-brand-cyan to-brand-blue w-1/4 transition-all duration-300"></div>
+                        </div>
+                    </div>
+
+                    <!-- Question View -->
+                    <div id="quiz-question-box" class="space-y-6">
+                        <h3 id="quiz-q-title" class="text-lg sm:text-xl font-bold text-white text-center py-2">
+                            질문을 불러오는 중...
+                        </h3>
+
+                        <div class="grid grid-cols-1 gap-3 pt-2">
+                            <button id="btn-opt-a" class="p-4 rounded-xl clean-card text-left text-slate-200 hover:border-brand-cyan hover:text-brand-cyan text-sm transition-all flex items-center justify-between group">
+                                <span id="text-opt-a">A 옵션</span>
+                                <i class="fa-solid fa-arrow-right text-slate-600 group-hover:text-brand-cyan transition-colors"></i>
+                            </button>
+                            <button id="btn-opt-b" class="p-4 rounded-xl clean-card text-left text-slate-200 hover:border-brand-cyan hover:text-brand-cyan text-sm transition-all flex items-center justify-between group">
+                                <span id="text-opt-b">B 옵션</span>
+                                <i class="fa-solid fa-arrow-right text-slate-600 group-hover:text-brand-cyan transition-colors"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Result View -->
+                    <div id="quiz-result-box" class="hidden text-center space-y-6">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan text-3xl">
+                            <i id="res-icon" class="fa-solid fa-robot"></i>
+                        </div>
+
+                        <div>
+                            <span id="res-tag" class="text-xs font-mono text-brand-cyan uppercase tracking-widest">YOUR BEST FIT TRACK</span>
+                            <h3 id="res-title" class="text-2xl sm:text-3xl font-black text-white mt-1">로보틱스 & 자동화 엔지니어</h3>
+                        </div>
+
+                        <p id="res-desc" class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-lg mx-auto bg-steel-900 p-4 rounded-xl border border-steel-border">
+                            결과 설명문이 나타납니다.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left text-xs font-mono">
+                            <div class="p-3.5 rounded-xl bg-steel-900 border border-steel-border">
+                                <span class="text-slate-500 block mb-1">KEY SKILLS</span>
+                                <span id="res-skills" class="text-brand-cyan font-bold">로봇 관절 제어, C++, 동역학</span>
+                            </div>
+                            <div class="p-3.5 rounded-xl bg-steel-900 border border-steel-border">
+                                <span class="text-slate-500 block mb-1">TARGET APPLICATIONS</span>
+                                <span id="res-apps" class="text-brand-emerald font-bold">휴머노이드, 자율주행, 스마트팩토리</span>
+                            </div>
+                        </div>
+
+                        <button id="btn-quiz-reset" class="px-6 py-3 rounded-xl bg-steel-800 hover:bg-steel-700 text-brand-cyan text-xs font-bold font-mono border border-brand-cyan/30 transition-all">
+                            <i class="fa-solid fa-rotate-right mr-1.5"></i> 테스트 다시 하기
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- SECTION 5: KEY APPLICATION SHOWCASE -->
+        <section id="applications" class="py-24 bg-steel-900 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="px-3 py-1 text-xs font-mono bg-brand-cyan/10 text-brand-cyan rounded-full border border-brand-cyan/20 uppercase tracking-widest">Future Engineering</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">현대 기계공학의 4대 핵심 응용 분야</h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        첨단 기술의 집약체로서 기계공학이 주도하는 대표적인 미래 산업 분야를 소개합니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- App 1 -->
+                    <div class="clean-card rounded-2xl p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-xl">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">자율주행 & 미래 모빌리티</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            전기차 샤시 통합 제어, 배터리 열관리 시스템(BTMS), 경량화 복합재 설계로 차세대 이동수단을 만듭니다.
+                        </p>
+                        <div class="text-[11px] font-mono text-blue-400 pt-2">#열관리 #경량화설계 #NVH</div>
+                    </div>
+
+                    <!-- App 2 -->
+                    <div class="clean-card rounded-2xl p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center text-brand-cyan text-xl">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">휴머노이드 & 협동 로봇</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            고정밀 감속기, 액추에이터 메커니즘, 역동역학(Inverse Dynamics) 알고리즘으로 인간 수준의 움직임을 구현합니다.
+                        </p>
+                        <div class="text-[11px] font-mono text-brand-cyan pt-2">#메카트로닉스 #관절제어 #액추에이터</div>
+                    </div>
+
+                    <!-- App 3 -->
+                    <div class="clean-card rounded-2xl p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-orange/10 border border-brand-orange/30 flex items-center justify-center text-brand-orange text-xl">
+                            <i class="fa-solid fa-fan"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">친환경 수소 & 풍력 터빈</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            수소 연료전지 유체 배관망, 초고효율 가스터빈 및 초대형 해상 풍력 블레이드의 공기역학 해석을 수행합니다.
+                        </p>
+                        <div class="text-[11px] font-mono text-brand-orange pt-2">#수소에너지 #CFD해석 #터보기계</div>
+                    </div>
+
+                    <!-- App 4 -->
+                    <div class="clean-card rounded-2xl p-6 space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-emerald/10 border border-brand-emerald/30 flex items-center justify-center text-brand-emerald text-xl">
+                            <i class="fa-solid fa-print"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">스마트 적층 제조 (3D 프린팅)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            금속 3D 프린팅 공정 제어 및 위상 최적화(Topology Optimization)로 복잡한 정밀 공학 부품을 단일 생산합니다.
+                        </p>
+                        <div class="text-[11px] font-mono text-brand-emerald pt-2">#적층제조 #위상최적화 #정밀가공</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Clean Portal Footer -->
+    <footer class="bg-steel-950 text-slate-400 py-12 border-t border-steel-border text-xs font-mono">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-brand-cyan flex items-center justify-center text-slate-950 font-bold text-sm">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <div>
+                        <span class="text-white font-bold text-sm tracking-wider">MECH-CORE</span>
+                        <span class="block text-[10px] text-slate-500">MODERN MECHANICAL ENGINEERING PORTAL</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6 text-slate-400 text-xs">
+                    <a href="#mechanics" class="hover:text-brand-cyan transition-colors">4대 역학</a>
+                    <a href="#simulator" class="hover:text-brand-cyan transition-colors">3D CAD 시뮬레이터</a>
+                    <a href="#matcher" class="hover:text-brand-cyan transition-colors">성향 분석</a>
+                    <a href="#applications" class="hover:text-brand-cyan transition-colors">응용 분야</a>
+                </div>
+
+                <p class="text-slate-500">© 2026 MECH-CORE Showcase. All rights reserved.</p>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Mobile Menu Navigation Toggle
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            mobileToggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+            mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+            // 2. Initialize Engineering Quiz Matcher Logic
+            initQuizMatcher();
+
+            // 3. Initialize Interactive Canvas Simulations
+            initHeroCanvasAnimation();
+            init3DMechanismSimulator();
+        });
+
+        // --- QUIZ MATCHER LOGIC ---
+        const quizData = [
+            {
+                q: "1. 컴퓨터 작업 시 가장 끌리는 프로젝트 타입은 무엇인가요?",
+                a: { text: "복잡한 3D 입체 형상을 모델링하고 정밀하게 설계하는 일 (CAD/CAE)", track: "cad" },
+                b: { text: "센서와 모터를 제어하는 C++/Python 로봇 알고리즘을 짜는 일", track: "robot" }
+            },
+            {
+                q: "2. 무언가를 새로 설계할 때 가장 우선시하고 싶은 요소는?",
+                a: { text: "가벼우면서도 엄청난 하중과 충격을 버텨내는 강인한 구조물", track: "cad" },
+                b: { text: "배터리 및 엔진의 열을 효과적으로 식히고 효율을 높이는 열 교환 장치", track: "thermal" }
+            },
+            {
+                q: "3. 흥미를 느끼는 미래 핵심 첨단 기술 분야는?",
+                a: { text: "스스로 사물을 인지하고 정밀하게 움직이는 휴머노이드 로봇", track: "robot" },
+                b: { text: "초고속 가스 터빈 및 수소 연료전지 차세대 에너틱 시스템", track: "thermal" }
+            },
+            {
+                q: "4. 도전해보고 싶은 가상 연구 과제는?",
+                a: { text: "자동차 충돌 시 파손 부위를 컴퓨터 색상 하트맵으로 가상 해석하기", track: "cad" },
+                b: { text: "비행기 날개 주위의 공기 흐름(유선)과 저항을 시뮬레이션하기", track: "thermal" }
+            }
+        ];
+
+        const quizResults = {
+            cad: {
+                title: "정밀 CAD / CAE 구조해석 전문가형",
+                icon: "fa-cubes-stacked",
+                desc: "공간 감각과 정밀한 분석력이 뛰어납니다! 3D CAD 설계와 컴퓨터 시뮬레이션을 활용해 한치 오차 없는 완벽한 부품 구조를 설계하는 트랙이 적합합니다.",
+                skills: "3D CAD 모델링, FEA 응력 해석, 재료역학",
+                apps: "자동차 기체 구조, 항공우주 프레임, 3D 적층제조"
+            },
+            robot: {
+                title: "로보틱스 & 자동화 시스템 엔지니어형",
+                icon: "fa-robot",
+                desc: "역동적인 메커니즘과 소프트웨어 제어의 조합에 강점이 있습니다! 로봇의 관절 움직임, 센서 제어, 메카트로닉스 시스템 개발 분야에서 뛰어난 역량을 발휘할 수 있습니다.",
+                skills: "로봇 동역학, C++/Python 제어, 센서 메카트로닉스",
+                apps: "휴머노이드 로봇, 자율주행 모빌리티, 스마트팩토리"
+            },
+            thermal: {
+                title: "열·유체 & 차세대 에너지 엔지니어형",
+                icon: "fa-fire-flame-curved",
+                desc: "눈에 보이지 않는 공기 흐름과 열의 이동을 다루는 데 감각이 있습니다! 친환경 에너지, 전기차 열관리, 공기역학 설계 트랙에 최적화된 성향입니다.",
+                skills: "열역학, 전산유체역학(CFD), 열전달 해석",
+                apps: "전기차 배터리 냉각, 수소 터빈, 풍력 블레이드"
+            }
+        };
+
+        function initQuizMatcher() {
+            let current = 0;
+            const scores = { cad: 0, robot: 0, thermal: 0 };
+
+            const qTitle = document.getElementById('quiz-q-title');
+            const btnA = document.getElementById('btn-opt-a');
+            const btnB = document.getElementById('btn-opt-b');
+            const textA = document.getElementById('text-opt-a');
+            const textB = document.getElementById('text-opt-b');
+            const stepText = document.getElementById('quiz-step-text');
+            const progressBar = document.getElementById('quiz-progress-bar');
+
+            const qBox = document.getElementById('quiz-question-box');
+            const rBox = document.getElementById('quiz-result-box');
+            const pBox = document.getElementById('quiz-progress-box');
+
+            function loadQ() {
+                const data = quizData[current];
+                qTitle.innerText = data.q;
+                textA.innerText = data.a.text;
+                textB.innerText = data.b.text;
+
+                stepText.innerText = `${current + 1} / ${quizData.length}`;
+                progressBar.style.width = `${((current + 1) / quizData.length) * 100}%`;
+            }
+
+            function selectOption(type) {
+                const track = quizData[current][type].track;
+                scores[track]++;
+
+                current++;
+                if (current < quizData.length) {
+                    loadQ();
+                } else {
+                    showRes();
+                }
+            }
+
+            function showRes() {
+                qBox.classList.add('hidden');
+                pBox.classList.add('hidden');
+                rBox.classList.remove('hidden');
+
+                let best = 'cad';
+                if (scores.robot > scores[best]) best = 'robot';
+                if (scores.thermal > scores[best]) best = 'thermal';
+
+                const data = quizResults[best];
+                document.getElementById('res-icon').className = `fa-solid ${data.icon}`;
+                document.getElementById('res-title').innerText = data.title;
+                document.getElementById('res-desc').innerText = data.desc;
+                document.getElementById('res-skills').innerText = data.skills;
+                document.getElementById('res-apps').innerText = data.apps;
+            }
+
+            btnA.addEventListener('click', () => selectOption('a'));
+            btnB.addEventListener('click', () => selectOption('b'));
+
+            document.getElementById('btn-quiz-reset').addEventListener('click', () => {
+                current = 0;
+                scores.cad = 0; scores.robot = 0; scores.thermal = 0;
+                rBox.classList.add('hidden');
+                qBox.classList.remove('hidden');
+                pBox.classList.remove('hidden');
+                loadQ();
+            });
+
+            loadQ();
+        }
+
+        // --- HERO BACKGROUND CANVAS ANIMATION ---
+        function initHeroCanvasAnimation() {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            const particles = [];
+            const pCount = Math.min(w / 20, 45);
+
+            for (let i = 0; i < pCount; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.6,
+                    vy: (Math.random() - 0.5) * 0.6
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 140) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(0, 240, 255, ${0.2 * (1 - dist / 140)})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > w) p.vx *= -1;
+                    if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = '#00f0ff';
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            });
+
+            draw();
+        }
+
+        // --- 3D MECHANICAL GEAR SIMULATOR CANVAS ---
+        function init3DMechanismSimulator() {
+            const canvas = document.getElementById('sim-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let w = canvas.width = canvas.parentElement.clientWidth;
+            let h = canvas.height = canvas.parentElement.clientHeight;
+
+            let angle = 0;
+            let isSpinning = true;
+            let renderMode = 'fea';
+
+            const sliderRpm = document.getElementById('slider-rpm');
+            const sliderLoad = document.getElementById('slider-load');
+            const valRpm = document.getElementById('val-rpm');
+            const valLoad = document.getElementById('val-load');
+            const hudRpm = document.getElementById('hud-rpm');
+            const hudMode = document.getElementById('hud-mode');
+            const calcStress = document.getElementById('calc-stress');
+            const calcSafety = document.getElementById('calc-safety');
+
+            const btnFea = document.getElementById('btn-mode-fea');
+            const btnWire = document.getElementById('btn-mode-wire');
+            const btnSolid = document.getElementById('btn-mode-solid');
+
+            function setMode(mode) {
+                renderMode = mode;
+                [btnFea, btnWire, btnSolid].forEach(b => {
+                    b.classList.remove('bg-brand-cyan', 'text-slate-950');
+                    b.classList.add('bg-steel-800', 'text-slate-300');
+                });
+
+                if (mode === 'fea') {
+                    btnFea.classList.replace('bg-steel-800', 'bg-brand-cyan');
+                    btnFea.classList.replace('text-slate-300', 'text-slate-950');
+                    hudMode.innerText = 'FEA Stress Heatmap';
+                } else if (mode === 'wire') {
+                    btnWire.classList.replace('bg-steel-800', 'bg-brand-cyan');
+                    btnWire.classList.replace('text-slate-300', 'text-slate-950');
+                    hudMode.innerText = 'Wireframe Mesh Mode';
+                } else if (mode === 'solid') {
+                    btnSolid.classList.replace('bg-steel-800', 'bg-brand-cyan');
+                    btnSolid.classList.replace('text-slate-300', 'text-slate-950');
+                    hudMode.innerText = 'Solid Metallic Surface';
+                }
+            }
+
+            btnFea.addEventListener('click', () => setMode('fea'));
+            btnWire.addEventListener('click', () => setMode('wire'));
+            btnSolid.addEventListener('click', () => setMode('solid'));
+
+            document.getElementById('btn-toggle-spin').addEventListener('click', (e) => {
+                isSpinning = !isSpinning;
+                e.currentTarget.innerHTML = isSpinning ? '<i class="fa-solid fa-pause mr-1"></i> 정지' : '<i class="fa-solid fa-play mr-1"></i> 회전';
+            });
+
+            sliderRpm.addEventListener('input', (e) => {
+                valRpm.innerText = e.target.value + ' RPM';
+                hudRpm.innerText = e.target.value + ' RPM';
+            });
+
+            sliderLoad.addEventListener('input', (e) => {
+                const load = parseInt(e.target.value);
+                valLoad.innerText = load + ' kN';
+
+                const stress = (load * 3.78).toFixed(1);
+                const safety = (620 / stress).toFixed(2);
+
+                calcStress.innerText = stress + ' MPa';
+                calcSafety.innerText = `${safety} (${safety >= 1.5 ? '안전' : '위험'})`;
+                calcSafety.className = safety >= 1.5 ? 'text-brand-emerald font-bold text-sm' : 'text-red-500 font-bold text-sm';
+            });
+
+            function renderGear(cx, cy, teeth, outerR, innerR, rotAngle, mode) {
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(rotAngle);
+
+                ctx.beginPath();
+                for (let i = 0; i < teeth; i++) {
+                    const a1 = (i / teeth) * Math.PI * 2;
+                    const a2 = ((i + 0.3) / teeth) * Math.PI * 2;
+                    const a3 = ((i + 0.5) / teeth) * Math.PI * 2;
+                    const a4 = ((i + 0.8) / teeth) * Math.PI * 2;
+
+                    ctx.lineTo(Math.cos(a1) * innerR, Math.sin(a1) * innerR);
+                    ctx.lineTo(Math.cos(a2) * outerR, Math.sin(a2) * outerR);
+                    ctx.lineTo(Math.cos(a3) * outerR, Math.sin(a3) * outerR);
+                    ctx.lineTo(Math.cos(a4) * innerR, Math.sin(a4) * innerR);
+                }
+                ctx.closePath();
+
+                if (mode === 'wire') {
+                    ctx.strokeStyle = '#00f0ff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                } else if (mode === 'solid') {
+                    const grad = ctx.createLinearGradient(-outerR, -outerR, outerR, outerR);
+                    grad.addColorStop(0, '#475569');
+                    grad.addColorStop(1, '#1e293b');
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    ctx.strokeStyle = '#64748b';
+                    ctx.stroke();
+                } else { // FEA Heatmap
+                    const grad = ctx.createRadialGradient(0, 0, innerR * 0.3, 0, 0, outerR);
+                    grad.addColorStop(0, '#2563eb');
+                    grad.addColorStop(0.5, '#10b981');
+                    grad.addColorStop(0.8, '#eab308');
+                    grad.addColorStop(1, '#ef4444');
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    ctx.strokeStyle = '#ff6b00';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+
+                // Inner hole
+                ctx.beginPath();
+                ctx.arc(0, 0, innerR * 0.4, 0, Math.PI * 2);
+                ctx.fillStyle = '#0a0d14';
+                ctx.fill();
+                ctx.strokeStyle = mode === 'wire' ? '#00f0ff' : '#475569';
+                ctx.stroke();
+
+                ctx.restore();
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+
+                const cx = w / 2;
+                const cy = h / 2;
+                const speed = (parseInt(sliderRpm.value) / 60) * 0.04;
+
+                if (isSpinning) {
+                    angle += speed;
+                }
+
+                // Sun Gear
+                renderGear(cx, cy, 16, 85, 68, angle, renderMode);
+
+                // Planet Gears
+                const orbitR = 135;
+                for (let i = 0; i < 3; i++) {
+                    const orbAngle = (i / 3) * Math.PI * 2 + (angle * 0.3);
+                    const px = cx + Math.cos(orbAngle) * orbitR;
+                    const py = cy + Math.sin(orbAngle) * orbitR;
+                    renderGear(px, py, 10, 45, 35, -angle * 1.8, renderMode);
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                if (!canvas.parentElement) return;
+                w = canvas.width = canvas.parentElement.clientWidth;
+                h = canvas.height = canvas.parentElement.clientHeight;
+            });
+
+            animate();
+        }
+    </script>
+</body>
+</html>
